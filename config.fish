@@ -7,17 +7,20 @@ eval (direnv hook fish)
 #
 # xenv
 #
-set -x ANYENV_ROOT  $HOME/.anyenv
-if test -d "$ANYENV_ROOT"
-    set -x PATH $ANYENV_ROOT/bin $PATH
-    anyenv init - fish | source
+set -Ux ANYENV_ROOT  $HOME/.anyenv
+set -U fish_user_paths $ANYENV_ROOT/bin $fish_user_paths
+if command -v anyenv 1>/dev/null 2>&1
+    source (anyenv init - fish | psub)
 end
 
-set -x PYENV_ROOT $HOME/.pyenv
-if test -d "$PYENV_ROOT"
-    set -x PATH $PYENV_ROOT/bin $PATH
-    pyenv init - fish | source
-    pyenv virtualenv-init - fish | source
+set -Ux PYENV_ROOT $HOME/.pyenv
+set -U fish_user_paths $PYENV_ROOT/bin $fish_user_paths
+if command -v pyenv 1>/dev/null 2>&1
+    if status is-login && test -z "$TMUX"
+        source (pyenv init --path fish | psub)
+    end
+    source (pyenv init - fish | psub)
+    source (pyenv virtualenv-init - fish | psub)
 end
 
 #set SDKMAN_DIR  $HOME/.sdkman
