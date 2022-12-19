@@ -7,14 +7,14 @@ eval (direnv hook fish)
 #
 # xenv
 #
-set -Ux ANYENV_ROOT  $HOME/.anyenv
-set -U fish_user_paths $ANYENV_ROOT/bin $fish_user_paths
+set -gu ANYENV_ROOT $HOME/.anyenv
+set -gu fish_user_paths $ANYENV_ROOT/bin $fish_user_paths
 if command -v anyenv 1>/dev/null 2>&1
     source (anyenv init - fish | psub)
 end
 
-set -Ux PYENV_ROOT $HOME/.pyenv
-set -U fish_user_paths $PYENV_ROOT/bin $fish_user_paths
+set -gu PYENV_ROOT $HOME/.pyenv
+set -gu fish_user_paths $PYENV_ROOT/bin $fish_user_paths
 if command -v pyenv 1>/dev/null 2>&1
     if status is-login && test -z "$TMUX"
         source (pyenv init --path fish | psub)
